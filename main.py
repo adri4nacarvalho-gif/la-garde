@@ -29,6 +29,30 @@ def iniciar_servidor():
 
 Thread(target=iniciar_servidor, daemon=True).start()
 
+from zoneinfo import ZoneInfo
+
+from flask import Flask
+from threading import Thread
+
+# 🌷 LA GARDE — MONITORAMENTO RENDER
+
+app = Flask(__name__)
+
+@app.route("/")
+@app.route("/health")
+def health():
+    return "La Garde online", 200
+
+def iniciar_servidor():
+    porta = int(os.environ.get("PORT", 10000))
+    app.run(
+        host="0.0.0.0",
+        port=porta,
+        use_reloader=False
+    )
+
+Thread(target=iniciar_servidor, daemon=True).start()
+
 
 import discord
 from discord import app_commands
